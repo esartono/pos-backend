@@ -81,10 +81,10 @@ class CategoryController extends Controller
     public function delete($id)
     {
         try {
-            $category = $this->category->with(['childs'])->find($id, ['id', 'parent_id']);
+            $category = $this->category->withCount(['childs', 'products'])->find($id, ['id', 'parent_id']);
 
-            if (count($category->childs) > 0) {
-                return $this->responseError(__('messages.can_not_delete_parent_model'), 422);
+            if ($category->childs_count > 0 || $category->products_count > 0) {
+                return $this->responseError(__('messages.can_not_delete_this_model'), 422);
             }
 
             $category = $this->category->delete($id);

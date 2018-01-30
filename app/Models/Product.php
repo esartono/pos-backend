@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Product extends Model
 {
     use SoftDeletes;
 
@@ -15,8 +15,11 @@ class Category extends Model
      * @var array
      */
     protected $fillable = [
-        'parent_id',
+        'category_id',
         'name',
+        'retail_price',
+        'wholesale_price',
+        'featured_image',
         'description',
     ];
 
@@ -30,18 +33,8 @@ class Category extends Model
         'deleted_at'
     ];
 
-    public function parent()
+    public function category()
     {
-        return $this->belongsTo(Category::class, 'parent_id', 'id');
-    }
-
-    public function childs()
-    {
-        return $this->hasMany(Category::class, 'parent_id', 'id');
-    }
-
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 }
