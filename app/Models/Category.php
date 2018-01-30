@@ -5,12 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Voucher extends Model
+class Category extends Model
 {
     use SoftDeletes;
-
-    const RECEIPT   = 1; // THU
-    const PAYMENT   = 2; // CHI
 
     /**
      * The attributes that are mass assignable.
@@ -18,16 +15,12 @@ class Voucher extends Model
      * @var array
      */
     protected $fillable = [
-        'type',
-        'arise_at',
-        'recipient_name',
-        'reason',
-        'amount',
+        'parent_id',
+        'name',
         'description',
     ];
 
     protected $dates = [
-        'arise_at',
         'created_at',
         'updated_at',
         'deleted_at'
@@ -36,4 +29,14 @@ class Voucher extends Model
     protected $hidden = [
         'deleted_at'
     ];
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id', 'id');
+    }
+
+    public function childs()
+    {
+        return $this->hasMany(Category::class, 'parent_id', 'id');
+    }
 }
