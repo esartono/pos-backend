@@ -79,6 +79,20 @@ class ProductController extends Controller
         }
     }
 
+    public function view($id)
+    {
+        try {
+            $product = $this->product->find($id);
+
+            return $this->responseSuccess($product);
+        } catch (ModelNotFoundException $e) {
+            return $this->responseError(__('messages.model_not_found'), 404);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->responseError(__('messages.something_went_wrong'), $e->getCode());
+        }
+    }
+
     public function delete($id)
     {
         try {
