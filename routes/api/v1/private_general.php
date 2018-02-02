@@ -12,6 +12,11 @@ $api->post('categories', 'CategoryController@create');
 $api->put('categories/{id}', 'CategoryController@update');
 $api->delete('categories/{id}', 'CategoryController@delete');
 
+$api->get('units', 'UnitController@index');
+$api->post('units', 'UnitController@create');
+$api->put('units/{id}', 'UnitController@update');
+$api->delete('units/{id}', 'UnitController@delete');
+
 $api->get('products', 'ProductController@index');
 $api->post('products', 'ProductController@create');
 $api->post('products/{id}', 'ProductController@update');
