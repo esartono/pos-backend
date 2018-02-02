@@ -7,6 +7,7 @@ use App\Http\Requests\Product\CreateRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Repositories\ProductRepository;
 use App\Repositories\CategoryRepository;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends Controller
@@ -45,6 +46,16 @@ class ProductController extends Controller
                 return $this->responseError(__('messages.category_not_found'), 422);
             }
 
+            // Upload featured image
+            if ($request->hasFile('featured_image')) {
+                $featuredImage = $request->file('featured_image');
+                $fileName = $featuredImage->getClientOriginalName() . '_' . uniqid() . '.' . $featuredImage->getClientOriginalExtension();
+
+                Storage::disk('public')->put('products/'. $fileName, fopen($featuredImage, 'r+'), 'public');
+
+                $data['featured_image'] = 'products/'. $fileName;
+            }
+
             $product = $this->product->create($data);
 
             return $this->responseSuccess($product);
@@ -66,6 +77,23 @@ class ProductController extends Controller
 
             if (null === $category) {
                 return $this->responseError(__('messages.category_not_found'), 422);
+            }
+
+            // Upload featured image
+            if ($request->hasFile('featured_image')) {
+                $disk = Storage::disk('public');
+
+                // Delete old file
+                if ($disk->exists($product->featured_image)) {
+                    $disk->delete($product->featured_image);
+                }
+
+                $featuredImage = $request->file('featured_image');
+                $fileName = $featuredImage->getClientOriginalName() . '_' . uniqid() . '.' . $featuredImage->getClientOriginalExtension();
+
+                $disk->put('products/'. $fileName, fopen($featuredImage, 'r+'), 'public');
+
+                $data['featured_image'] = 'products/'. $fileName;
             }
 
             $product = $this->product->update($data, $id);
@@ -96,9 +124,16 @@ class ProductController extends Controller
     public function delete($id)
     {
         try {
-            $product = $this->product->find($id, ['id']);
+            $product = $this->product->find($id, ['id', 'featured_image']);
+            $featuredImageUrl = $product->featured_image;
 
             $product = $this->product->delete($id);
+
+            // Delete featured image
+            $disk = Storage::disk('public');
+            if ($disk->exists($featuredImageUrl)) {
+                $disk->delete($featuredImageUrl);
+            }
 
             return $this->responseSuccess([]);
         } catch (ModelNotFoundException $e) {
