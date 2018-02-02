@@ -25,7 +25,7 @@ class ProductController extends Controller
     {
         try {
             $limit = $this->getPaginate($request);
-            $products = $this->product->orderBy('name', 'ASC')->paginate($limit);
+            $products = $this->product->with(['category', 'unit'])->orderBy('name', 'ASC')->paginate($limit);
 
             return $this->responseSuccess($products);
         } catch (Exception $e) {
@@ -37,7 +37,7 @@ class ProductController extends Controller
     public function create(CreateRequest $request)
     {
         try {
-            $data = $request->only('category_id', 'name', 'retail_price', 'wholesale_price', 'featured_image', 'description');
+            $data = $request->only('category_id', 'name', 'unit_id', 'retail_price', 'wholesale_price', 'featured_image', 'description');
 
             // Check if category model exist
             $category = $this->category->find($data['category_id'], ['id']);
@@ -70,7 +70,7 @@ class ProductController extends Controller
         try {
             $product = $this->product->find($id);
 
-            $data = $request->only('category_id', 'name', 'retail_price', 'wholesale_price', 'featured_image', 'description');
+            $data = $request->only('category_id', 'name', 'unit_id', 'retail_price', 'wholesale_price', 'featured_image', 'description');
 
             // Check if category model exist
             $category = $this->category->find($data['category_id'], ['id']);
@@ -110,7 +110,7 @@ class ProductController extends Controller
     public function view($id)
     {
         try {
-            $product = $this->product->find($id);
+            $product = $this->product->with(['category', 'unit'])->find($id);
 
             return $this->responseSuccess($product);
         } catch (ModelNotFoundException $e) {

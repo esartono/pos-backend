@@ -27,6 +27,7 @@ class CreateRequest extends FormRequest
         return [
             'category_id' => 'required|integer',
             'name' => 'required|string',
+            'unit_id' => 'required|integer',
             'retail_price' => 'required|integer',
             'wholesale_price' => 'integer|nullable',
             'featured_image' => 'mimes:jpg,jpeg,png,gif|nullable',
