@@ -22,3 +22,13 @@ $api->post('products', 'ProductController@create');
 $api->post('products/{id}', 'ProductController@update');
 $api->get('products/{id}', 'ProductController@view');
 $api->delete('products/{id}', 'ProductController@delete');
+
+$api->get('suppliers', 'SupplierController@index');
+$api->post('suppliers', 'SupplierController@create');
+$api->put('suppliers/{id}', 'SupplierController@update');
+$api->delete('suppliers/{id}', 'SupplierController@delete');
+
+$api->get('customers', 'CustomerController@index');
+$api->post('customers', 'CustomerController@create');
+$api->put('customers/{id}', 'CustomerController@update');
+$api->delete('customers/{id}', 'CustomerController@delete');

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Unit extends Model
+class Supplier extends Model
 {
     use SoftDeletes;
 
@@ -16,7 +16,8 @@ class Unit extends Model
      */
     protected $fillable = [
         'name',
-        'description',
+        'phone',
+        'address',
     ];
 
     protected $dates = [
@@ -28,9 +29,4 @@ class Unit extends Model
     protected $hidden = [
         'deleted_at'
     ];
-
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'products_units');
-    }
 }
