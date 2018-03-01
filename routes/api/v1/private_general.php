@@ -32,3 +32,9 @@ $api->get('customers', 'CustomerController@index');
 $api->post('customers', 'CustomerController@create');
 $api->put('customers/{id}', 'CustomerController@update');
 $api->delete('customers/{id}', 'CustomerController@delete');
+
+$api->get('purchases', 'PurchaseController@index');
+$api->post('purchases', 'PurchaseController@create');
+$api->put('purchases/{id}', 'PurchaseController@update');
+$api->get('purchases/{id}', 'PurchaseController@view');
+$api->delete('purchases/{id}', 'PurchaseController@delete');
