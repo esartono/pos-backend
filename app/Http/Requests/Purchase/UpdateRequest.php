@@ -28,6 +28,7 @@ class UpdateRequest extends FormRequest
             'supplier_id' => 'required|integer',
             'purchase_at' => 'required|date_format:"Y-m-d H:i:s"',
             'description' => 'nullable',
+            'purchase_items.*.id' => 'integer',
             'purchase_items.*.product_id' => 'required|integer',
             'purchase_items.*.unit_id' => 'required|integer',
             'purchase_items.*.quantity' => 'required|integer',
