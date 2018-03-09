@@ -34,7 +34,7 @@ class CategoryController extends Controller
             $data = $request->only('parent_id', 'name', 'description');
 
             // Check if parent model exist
-            if (null !== $data['parent_id']) {
+            if (isset($data['parent_id']) && null !== $data['parent_id']) {
                 $parent = $this->category->findParent($data['parent_id']);
 
                 if (null === $parent) {
@@ -59,7 +59,7 @@ class CategoryController extends Controller
             $data = $request->only('parent_id', 'name', 'description');
 
             // Check if parent model exist
-            if (null !== $data['parent_id']) {
+            if (isset($data['parent_id']) && null !== $data['parent_id']) {
                 $parent = $this->category->findParent($data['parent_id']);
 
                 if (null === $parent) {
